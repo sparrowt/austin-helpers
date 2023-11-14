@@ -43,7 +43,7 @@ def analyse_austin_trace(filename):
                 samples = Sample.parse(line, metric_type)
                 # Accumulate totals by thread
                 pid_tid = f'P{samples[0].pid};T{samples[0].thread}'
-                for i, label in enumerate(['cpu_time_micros', 'wall_time_micros', 'mem_alloc_KB', 'mem_dealloc_KB']):
+                for i, label in enumerate(['cpu_time_micros', 'wall_time_micros', 'mem_alloc_bytes', 'mem_dealloc_bytes']):
                     totals[pid_tid][label] += samples[i].metric.value
             except InvalidSample:
                 continue
@@ -59,8 +59,8 @@ def analyse_austin_trace(filename):
             f"{pid_tid:<12}"
             f"   {stats['wall_time_micros']/1000000: 6.1f}s elapsed"
             f"   {stats['cpu_time_micros']/1000000: 6.3f}s CPU"
-            f"   {stats['mem_alloc_KB']/1024:+7.1f}MB allocated"
-            f"   ({stats['mem_dealloc_KB']/1024: 7.1f}MB deallocated)"
+            f"   {stats['mem_alloc_bytes']/1024/1024:+7.1f}MB allocated"
+            f"   ({stats['mem_dealloc_bytes']/1024/1024: 7.1f}MB deallocated)"
         )
 
 
